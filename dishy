@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+raw_results=$(curl -s http://api.giphy.com/v1/gifs/search?q=$1\&api_key=dc6zaTOxFJmzC\&rating=pg)
+num_results=$(jq .pagination.count <<< "$raw_results")
+imgcat <(curl -s $(echo "$raw_results" | jq .data[$(jot -r 1 1 $(echo "$num_results"))].images.original.url --raw-output))
