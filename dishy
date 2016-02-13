@@ -17,5 +17,10 @@ get_url () {
   fi
 }
 
-get_url "$*"
+if [ $# -ne 0 ]; then
+  get_url "$*"
+else
+  get_random_url
+fi
+
 imgcat <(curl -s $(echo $url));
