@@ -6,7 +6,7 @@ get_random_url () {
 }
 
 get_url () {
-  search_term=$1
+  search_term=${1// /%20}
   raw_results=$(curl -s http://api.giphy.com/v1/gifs/search?q=$search_term\&api_key=dc6zaTOxFJmzC\&rating=pg)
   num_results=$(jq .pagination.count <<< $raw_results)
   if [ $num_results -ne 0 ]; then
@@ -17,5 +17,5 @@ get_url () {
   fi
 }
 
-get_url $1
+get_url "$*"
 imgcat <(curl -s $(echo $url));
