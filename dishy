@@ -1,5 +1,21 @@
 #!/usr/bin/env bash
 
-raw_results=$(curl -s http://api.giphy.com/v1/gifs/search?q=$1\&api_key=dc6zaTOxFJmzC\&rating=pg)
-num_results=$(jq .pagination.count <<< "$raw_results")
-imgcat <(curl -s $(echo "$raw_results" | jq .data[$(jot -r 1 0 $(expr $num_results - 1))].images.original.url --raw-output))
+get_random_url () {
+  raw_results=$(curl -s http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC\&rating=pg)
+  url=$(jq .data.image_original_url --raw-output <<< $raw_results)
+}
+
+get_url () {
+  search_term=$1
+  raw_results=$(curl -s http://api.giphy.com/v1/gifs/search?q=$search_term\&api_key=dc6zaTOxFJmzC\&rating=pg)
+  num_results=$(jq .pagination.count <<< $raw_results)
+  if [ $num_results -ne 0 ]; then
+    url=$(jq .data[$(jot -r 1 0 $(expr $num_results - 1))].images.original.url --raw-output <<< $raw_results)
+  else
+    echo "Terrible search term!"
+    get_random_url
+  fi
+}
+
+get_url $1
+imgcat <(curl -s $(echo $url));
