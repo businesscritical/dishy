@@ -106,7 +106,7 @@ dish_up() {
 last_arg=${@:$#}
 all_but_last_arg=${@:1:$#-1}
 
-if [ $last_arg == "--watch" ]; then
+if [ $last_arg ] && [ $last_arg == "--watch" ]; then
   dishy_watch $all_but_last_arg
 else
   dish_up $*
