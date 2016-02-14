@@ -28,6 +28,9 @@ function print_st() {
 #   inline: 0 or 1
 #   base64contents: Base64-encoded contents
 function print_image() {
+    if [ "$watch_mode" == true ]; then
+      clear
+    fi
     print_osc
     printf '1337;File='
     if [[ -n "$1" ]]; then
@@ -68,10 +71,43 @@ get_url () {
   fi
 }
 
-if [ $# -ne 0 ]; then
-  get_url "$*"
-else
-  get_random_url
-fi
+dishy_watch() {
+	watch_mode=true
+	tput smcup
+	if [ -t 0 ]; then stty -echo -icanon -icrnl time 0 min 0; fi
 
-print_image_url $url
+	clear
+
+	keypress=''
+	while [ "x$keypress" = "x" ]; do
+
+		dish_up $*
+
+		sleep 5
+
+		keypress="`cat -v`"
+	done
+
+	if [ -t 0 ]; then stty sane; fi
+
+	tput rmcup
+}
+
+dish_up() {
+	if [ $# -ne 0 ]; then
+		get_url "$*"
+	else
+		get_random_url
+	fi
+
+	print_image_url $url
+}
+
+last_arg=${@:$#}
+all_but_last_arg=${@:1:$#-1}
+
+if [ $last_arg == "--watch" ]; then
+  dishy_watch $all_but_last_arg
+else
+  dish_up $*
+fi
