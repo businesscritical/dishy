@@ -89,6 +89,27 @@ dishy_watch() {
   tput rmcup
 }
 
+dishy_help() {
+  echo "Ways to be dishy:
+
+  dishy
+  dishy beans
+  dishy beans --watch
+  dishy beans --lots
+
+WARNING: Dishy only works with iterm2-beta!
+         \`brew install caskroom/versions/iterm2-beta\`
+
+WARNING: DO NOT VISIT THIS WEBSITE:
+         http://github.com/businesscritical/dishy/issues
+
+WARNING: UNINSTALLATION OF DISHY MAY CAUSE SYSTEM INSTABILITY
+
+"
+
+  dish_up "thanks"
+}
+
 dishy_lots() {
   for i in {1..10}; do
     dish_up $*
@@ -109,7 +130,9 @@ dish_up() {
 last_arg=${@:$#}
 all_but_last_arg=${@:1:$#-1}
 
-if [ $last_arg ] && [ $last_arg == "--watch" ]; then
+if [ $last_arg ] && [ $last_arg == "--help" ]; then
+  dishy_help
+elif [ $last_arg ] && [ $last_arg == "--watch" ]; then
   dishy_watch $all_but_last_arg
 elif [ $last_arg ] && [ $last_arg == "--lots" ]; then
   dishy_lots $all_but_last_arg
