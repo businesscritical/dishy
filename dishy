@@ -118,11 +118,14 @@ dishy_lots() {
 }
 
 dish_up() {
-  if [ $# -ne 0 ]; then
-    get_url "$*"
-  else
-    get_random_url
-  fi
+  last_url=$url
+  while [ "$last_url" == "$url" ]; do
+    if [ $# -ne 0 ]; then
+      get_url "$*"
+    else
+      get_random_url
+    fi
+  done
 
   print_image_url $url
 }
