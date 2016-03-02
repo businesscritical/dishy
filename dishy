@@ -2,6 +2,7 @@
 
 api_key=${DISHY_GIPHY_API_KEY:-dc6zaTOxFJmzC}
 rating=${DISHY_RATING:-pg}
+lots_count=${DISHY_COUNT:-10}
 
 # tmux requires unrecognized OSC sequences to be wrapped with DCS tmux;
 # <sequence> ST, and for all ESCs in <sequence> to be replaced with ESC ESC. It
@@ -111,7 +112,7 @@ WARNING: UNINSTALLATION OF DISHY MAY CAUSE SYSTEM INSTABILITY
 }
 
 dishy_lots() {
-  for i in {1..10}; do
+  for i in $(seq 1 $lots_count); do
     dish_up $*
     echo ""
   done
