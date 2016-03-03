@@ -25,6 +25,10 @@ Only the world's most longingly-created terminals will support dishy in its miss
 - `dishy beans --watch`
 - `dishy beans --lots`
 
-### License
+## License
 
 ![license](https://cloud.githubusercontent.com/assets/407342/13480950/5400a908-e096-11e5-908c-fc67e3193091.gif)
+
+## The Source of Our Power
+
+![giphy](https://cloud.githubusercontent.com/assets/407342/13481125/ca171cc0-e097-11e5-8d90-41521637965f.gif)
