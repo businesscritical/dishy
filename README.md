@@ -12,7 +12,7 @@ The world's premier software for delivering lovingly-selected GIFs directly to y
 
 ### Prerequisites
 
-Only the world's most longingly-created terminals will support dishy in its mission. Make sure you have iTerm2's beta installed. Use [brew](http://brew.sh/) (`brew cask install caskroom/versions/iterm2-beta`) or get it straight from [the source](https://www.iterm2.com/downloads.html).
+Only the world's most lovingly-created terminals will support dishy in its mission. Make sure you have iTerm2's beta installed. Use [brew](http://brew.sh/) (`brew cask install caskroom/versions/iterm2-beta`) or get it straight from [the source](https://www.iterm2.com/downloads.html).
 
 ### The Real Deal
 
