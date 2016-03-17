@@ -35,16 +35,16 @@ function print_image() {
   print_osc
   printf '1337;File='
   if [[ -n "$1" ]]; then
-    printf 'name='`echo -n "$1" | base64`";"
+    printf "name=%s;" "$(echo -n "$1" | base64)"
   fi
-  if $(base64 --version 2>&1 | grep GNU > /dev/null)
+  if base64 --version 2>&1 | grep GNU > /dev/null
   then
     BASE64ARG=-d
   else
     BASE64ARG=-D
   fi
   echo -n "$3" | base64 $BASE64ARG | wc -c | awk '{printf "size=%d",$1}'
-  printf ";inline=$2"
+  printf ";inline=%s" "$2"
   printf ":"
   echo -n "$3"
   print_st
@@ -52,19 +52,19 @@ function print_image() {
 }
 
 print_image_url() {
-  print_image $1 1 "$(base64 <(curl -s $(echo $1)))"
+  print_image "$1" 1 "$(base64 <(curl -s "$1"))"
 }
 
 get_random_url () {
-  raw_results=$(curl -s http://api.giphy.com/v1/gifs/random?api_key=$api_key\&rating=$rating)
-  url=$(jq .data.image_original_url --raw-output <<< $raw_results)
+  raw_results=$(curl -s "http://api.giphy.com/v1/gifs/random?api_key=$api_key&rating=$rating")
+  url=$(jq .data.image_original_url --raw-output <<< "$raw_results")
 }
 
 get_url () {
   search_term=${1// /%20}
-  raw_results=$(curl -s http://api.giphy.com/v1/gifs/translate?s=$search_term\&api_key=$api_key\&rating=$rating)
-  if [ $(jq '.data | length' <<< $raw_results) != '0' ]; then
-    url=$(jq .data.images.original.url --raw-output <<< $raw_results)
+  raw_results=$(curl -s "http://api.giphy.com/v1/gifs/translate?s=$search_term&api_key=$api_key&rating=$rating")
+  if [ "$(jq '.data | length' <<< "$raw_results")" != '0' ]; then
+    url=$(jq .data.images.original.url --raw-output <<< "$raw_results")
   else
     echo "Terrible search term!"
     get_random_url
@@ -80,9 +80,9 @@ dishy_watch() {
 
   keypress=''
   while [ "x$keypress" = "x" ]; do
-    dish_up $*
+    dish_up "$@"
     sleep 5
-    keypress="`cat -v`"
+    keypress="$(cat -v)"
   done
 
   if [ -t 0 ]; then stty sane; fi
@@ -112,8 +112,8 @@ WARNING: UNINSTALLATION OF DISHY MAY CAUSE SYSTEM INSTABILITY
 }
 
 dishy_lots() {
-  for i in $(seq 1 $lots_count); do
-    dish_up $*
+  for _ in $(seq 1 "$lots_count"); do
+    dish_up "$@"
     echo ""
   done
 }
@@ -125,18 +125,18 @@ dish_up() {
     get_random_url
   fi
 
-  print_image_url $url
+  print_image_url "$url"
 }
 
-last_arg=${@:$#}
-all_but_last_arg=${@:1:$#-1}
+last_arg=${*:$#}
+all_but_last_arg=${*:1:$#-1}
 
-if [ $last_arg ] && [ $last_arg == "--help" ]; then
+if [ "$last_arg" ] && [ "$last_arg" == "--help" ]; then
   dishy_help
-elif [ $last_arg ] && [ $last_arg == "--watch" ]; then
-  dishy_watch $all_but_last_arg
-elif [ $last_arg ] && [ $last_arg == "--lots" ]; then
-  dishy_lots $all_but_last_arg
+elif [ "$last_arg" ] && [ "$last_arg" == "--watch" ]; then
+  dishy_watch "$all_but_last_arg"
+elif [ "$last_arg" ] && [ "$last_arg" == "--lots" ]; then
+  dishy_lots "$all_but_last_arg"
 else
-  dish_up $*
+  dish_up "$@"
 fi
