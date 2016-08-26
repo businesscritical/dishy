@@ -3,6 +3,7 @@
 api_key=${DISHY_GIPHY_API_KEY:-dc6zaTOxFJmzC}
 rating=${DISHY_RATING:-pg}
 lots_count=${DISHY_COUNT:-10}
+watch_delay=${DISHY_DELAY:-5}
 
 # tmux requires unrecognized OSC sequences to be wrapped with DCS tmux;
 # <sequence> ST, and for all ESCs in <sequence> to be replaced with ESC ESC. It
@@ -81,7 +82,7 @@ dishy_watch() {
   keypress=''
   while [ "x$keypress" = "x" ]; do
     dish_up "$@"
-    sleep 5
+    sleep $watch_delay
     keypress="$(cat -v)"
   done
 
@@ -97,6 +98,9 @@ dishy_help() {
   dishy beans
   dishy beans --watch
   dishy beans --lots
+
+WARNING: FEATURE BLOAT
+         DISHY_DELAY environment variable might slow down --watch!
 
 WARNING: Dishy only works with iterm2-beta!
          \`brew install caskroom/versions/iterm2-beta\`
