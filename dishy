@@ -98,8 +98,8 @@ dishy_help() {
   dishy beans --watch
   dishy beans --lots
 
-WARNING: Dishy only works with iterm2-beta!
-         \`brew install caskroom/versions/iterm2-beta\`
+WARNING: Dishy only works with iterm2!
+         \`brew install caskroom/versions/iterm2\`
 
 WARNING: DO NOT VISIT THIS WEBSITE:
          http://github.com/businesscritical/dishy/issues
